@@ -62,10 +62,14 @@ export default function LoginPage() {
       });
 
       router.push('/');
-    } catch (error: any) {
-      setErrorMessage(
-        error.message || 'Something went wrong. Please try again.'
-      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(
+          error.message || 'Something went wrong. Please try again.'
+        );
+      } else {
+        setErrorMessage('Something went wrong. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
