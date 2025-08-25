@@ -2,36 +2,38 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Calendar, Dumbbell, Home, Menu, Phone, Users, X } from 'lucide-react';
 import logo from '@/public/logo.png'; // replace with your logo
 import { useAuthStore } from '@/store/auth';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user } = useAuthStore();
+  const pathname = usePathname();
+
+  // const { user, logout } = useAuthStore();
+
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.clearUser);
 
   const navLinks = [
-    { label: 'Home', href: '#' },
-    { label: 'Membership', href: '#plans' },
-    { label: 'Trainers', href: '#trainers' },
-    { label: 'Classes', href: '#classes' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Home', href: '#', icon: Home },
+    { label: 'Membership', href: '#plans', icon: Dumbbell },
+    { label: 'Trainers', href: '#trainers', icon: Users },
+    { label: 'Classes', href: '#classes', icon: Calendar },
+    { label: 'Contact', href: '#contact', icon: Phone },
   ];
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-[#0b0f14] text-white shadow-md">
-      {/* Top Section: Logo */}
-      <div className="flex items-center justify-between px-6 py-3 lg:px-12">
+      {/* Top Section: Logo and Login Button */}
+      <div className="flex items-center justify-between px-6 py-6 lg:px-12">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <Image
-            src={logo}
-            alt="Gym Logo"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
+          <span className="text-xl font-extrabold tracking-tight text-fuchsia-500">
+            Fit<span className="text-white">Zone</span>
+          </span>
         </Link>
 
         {/* Desktop Menu */}
@@ -47,32 +49,74 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Mobile Menu Button */}
-
+        {/* Login/Logout Button */}
         {user ? (
-          <div>{user.email}</div>
+          <div className="flex items-center gap-3">
+            {/* email */}
+            <span className="text-sm font-medium text-gray-200 bg-white/5 px-3 py-1 rounded-lg">
+              {user.email}
+            </span>
+
+            {/* logout button */}
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-gray-800 to-gray-700 px-4 py-2 text-sm font-semibold text-gray-100 shadow-sm hover:from-gray-700 hover:to-gray-600 transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                />
+              </svg>
+              Logout
+            </button>
+          </div>
         ) : (
           <Link
-            href={'/login'}
-            className="p-2 rounded-md hover:bg-white/10 transition"
+            href="/login"
+            className="flex items-center gap-3 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#0078D4] focus:ring-offset-1 transition-all"
           >
-            Login
+            {/* Microsoft logo */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+              <rect width="8" height="8" x="0" y="0" fill="#F25022" />
+              <rect width="8" height="8" x="10" y="0" fill="#7FBA00" />
+              <rect width="8" height="8" x="0" y="10" fill="#00A4EF" />
+              <rect width="8" height="8" x="10" y="10" fill="#FFB900" />
+            </svg>
+
+            <span>Sign in with Microsoft</span>
           </Link>
         )}
       </div>
 
       {/* Bottom Section: Menu Options for Mobile */}
-      <div className="lg:hidden fixed inset-x-0 bottom-0 bg-[#0b0f14] border-t border-white/10">
-        <nav className="flex justify-around py-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm hover:text-fuchsia-400 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+      <div className="lg:hidden fixed inset-x-0 bottom-0 bg-[#0b0f14]/95 backdrop-blur border-t border-white/10 shadow-lg">
+        <nav className="flex justify-around items-center py-6">
+          {navLinks.map(({ label, href, icon: Icon }) => {
+            const active = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`flex flex-col items-center text-xs transition-colors ${
+                  active
+                    ? 'text-fuchsia-400'
+                    : 'text-gray-400 hover:text-fuchsia-300'
+                }`}
+              >
+                <Icon className="h-5 w-5 mb-0.5" />
+                {label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>
