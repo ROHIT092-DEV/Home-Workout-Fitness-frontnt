@@ -28,11 +28,18 @@ export default function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-[#0b0f14] text-white shadow-md">
       {/* Top Section: Logo and Login Button */}
-      <div className="flex items-center justify-between px-6 py-4 lg:px-12">
+      <div className="flex items-center justify-between px-2 md:px-6 py-4 lg:px-12">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-extrabold tracking-tight text-fuchsia-500">
-            Fit<span className="text-white">Zone</span>
+        <Link href="/" className="flex items-center gap-2 group">
+          {/* Optional Icon */}
+          <div className="w-8 h-8 flex items-center justify-center rounded-full bg-fuchsia-500 text-white font-bold text-lg group-hover:scale-110 transition">
+            FZ
+          </div>
+
+          {/* Text Logo */}
+          <span className="text-2xl md:text-3xl font-extrabold tracking-tight">
+            <span className="text-fuchsia-500">Fit</span>
+            <span className="text-white">Zone</span>
           </span>
         </Link>
 
@@ -82,17 +89,21 @@ export default function Header() {
         ) : (
           <Link
             href="/login"
-            className="flex items-center gap-3 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#0078D4] focus:ring-offset-1 transition-all"
+            className="flex items-center gap-3 rounded-sm bg-gradient-to-r from-fuchsia-600 to-purple-700 px-5 py-2 text-sm font-semibold text-white shadow-md hover:from-fuchsia-700 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-1 transition-all"
           >
-            {/* Microsoft logo */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
-              <circle cx="5" cy="5" r="4" fill="#FF6B6B" />
-              <circle cx="13" cy="5" r="4" fill="#4ECDC4" />
-              <circle cx="5" cy="13" r="4" fill="#FFD93D" />
-              <circle cx="13" cy="13" r="4" fill="#1A535C" />
+            {/* Dumbbell Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              className="text-white"
+            >
+              <path d="M4 6h2v12H4V6zm14 0h2v12h-2V6zM9 4h2v16H9V4zm4 0h2v16h-2V4z" />
             </svg>
 
-            <span>Sign in With FitZone</span>
+            <span>Sign in with FitZone</span>
           </Link>
         )}
       </div>
