@@ -86,13 +86,13 @@ export default function Header() {
           >
             {/* Microsoft logo */}
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
-              <rect width="8" height="8" x="0" y="0" fill="#F25022" />
-              <rect width="8" height="8" x="10" y="0" fill="#7FBA00" />
-              <rect width="8" height="8" x="0" y="10" fill="#00A4EF" />
-              <rect width="8" height="8" x="10" y="10" fill="#FFB900" />
+              <circle cx="5" cy="5" r="4" fill="#FF6B6B" />
+              <circle cx="13" cy="5" r="4" fill="#4ECDC4" />
+              <circle cx="5" cy="13" r="4" fill="#FFD93D" />
+              <circle cx="13" cy="13" r="4" fill="#1A535C" />
             </svg>
 
-            <span>Sign in with Microsoft</span>
+            <span>Sign in With FitZone</span>
           </Link>
         )}
       </div>
