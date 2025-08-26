@@ -28,7 +28,7 @@ export default function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-[#0b0f14] text-white shadow-md">
       {/* Top Section: Logo and Login Button */}
-      <div className="flex items-center justify-between px-6 py-6 lg:px-12">
+      <div className="flex items-center justify-between px-6 py-4 lg:px-12">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <span className="text-xl font-extrabold tracking-tight text-fuchsia-500">
@@ -98,8 +98,11 @@ export default function Header() {
       </div>
 
       {/* Bottom Section: Menu Options for Mobile */}
-      <div className="lg:hidden fixed inset-x-0 bottom-0 bg-[#0b0f14]/95 backdrop-blur border-t border-white/10 shadow-lg">
-        <nav className="flex justify-around items-center py-6">
+      <div
+        className="lg:hidden fixed inset-x-0 bottom-0 bg-[#0b0f14]/95 backdrop-blur border-t
+       border-white/10 shadow-lg"
+      >
+        <nav className="flex justify-around items-center py-4">
           {navLinks.map(({ label, href, icon: Icon }) => {
             const active = pathname === href;
             return (
@@ -109,7 +112,7 @@ export default function Header() {
                 className={`flex flex-col items-center text-xs transition-colors ${
                   active
                     ? 'text-fuchsia-400'
-                    : 'text-gray-400 hover:text-fuchsia-300'
+                    : 'text-white font-bold hover:text-fuchsia-300'
                 }`}
               >
                 <Icon className="h-5 w-5 mb-0.5" />

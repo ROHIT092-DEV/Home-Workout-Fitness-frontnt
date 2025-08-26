@@ -102,11 +102,15 @@ export default function Hero() {
               priority
             />
             {/* overlay fade */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             {/* motivation text overlay */}
             <div className="absolute bottom-6 left-6 text-white">
-              <p className="text-xl font-bold">“Stronger Every Day”</p>
-              <p className="text-sm text-gray-200">— Our Gym Philosophy</p>
+              <p className="text-lg lg:text-xl font-bold">
+                “Stronger Every Day”
+              </p>
+              <p className="text-xs lg:text-sm text-gray-200">
+                — Our Gym Philosophy
+              </p>
             </div>
           </div>
         </motion.div>
