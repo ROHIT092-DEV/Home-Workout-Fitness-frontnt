@@ -3,14 +3,26 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { Calendar, Dumbbell, Home, Menu, Phone, Users, X } from 'lucide-react';
+import {
+  Calendar,
+  Dumbbell,
+  Edit3,
+  Home,
+  LogOut,
+  Menu,
+  Phone,
+  Users,
+  X,
+} from 'lucide-react';
 import logo from '@/public/logo.png'; // replace with your logo
 import { useAuthStore } from '@/store/auth';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  const [userDeatils, setUserDetails] = useState<any>(null);
 
   // const { user, logout } = useAuthStore();
 
@@ -24,6 +36,15 @@ export default function Header() {
     { label: 'Classes', href: '#classes', icon: Calendar },
     { label: 'Contact', href: '#contact', icon: Phone },
   ];
+
+  const initials = user?.fullName
+    ? user.fullName
+        .split(' ')
+        .map((n: string) => n[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
+    : 'U';
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-[#0b0f14] text-white shadow-md">
@@ -60,12 +81,139 @@ export default function Header() {
         {user ? (
           <div className="flex items-center gap-3">
             {/* email */}
-            <span className="text-sm font-medium text-gray-200 bg-white/5 px-3 py-1 rounded-lg">
+            {/* <span className="text-sm font-medium text-gray-200 bg-white/5 px-3 py-1 rounded-lg">
               {user.email}
-            </span>
+            </span> */}
+
+            <button
+              onClick={() => setIsOpen(true)}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-400 text-white font-bold shadow-md hover:opacity-90 transition"
+            >
+              {initials}
+            </button>
+
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                >
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-6"
+                  >
+                    {/* Close button */}
+                    <button
+                      onClick={() => setIsOpen(false)}
+                      className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+
+                    {/* Header */}
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-400 text-white text-xl font-bold shadow-md">
+                        {initials}
+                      </div>
+                      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                        {user.fullName}
+                      </h2>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {user.email}
+                      </p>
+                    </div>
+
+                    {/* Details */}
+                    {/* Details */}
+                    <div className="mt-6 space-y-3">
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Full Name</span>
+                        <span>{user.fullName}</span>
+                      </div>
+
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Email</span>
+                        <span>{user.email}</span>
+                      </div>
+
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Phone</span>
+                        <span>{user.phone || '—'}</span>
+                      </div>
+
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Role</span>
+                        <span className="capitalize">{user.role}</span>
+                      </div>
+
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Status</span>
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                            user.status === 'active'
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-red-100 text-red-700'
+                          }`}
+                        >
+                          {user.status}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Email Verified</span>
+                        <span>
+                          {user.emailVerified ? (
+                            <span className="text-green-600 font-semibold">
+                              Yes
+                            </span>
+                          ) : (
+                            <span className="text-red-600 font-semibold">
+                              No
+                            </span>
+                          )}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Created At</span>
+                        <span>{new Date(user.createdAt).toLocaleString()}</span>
+                      </div>
+
+                      <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Updated At</span>
+                        <span>{new Date(user.updatedAt).toLocaleString()}</span>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="mt-6 flex justify-between">
+                      <button
+                        onClick={() => console.log('Edit profile')}
+                        className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-800 transition"
+                      >
+                        <Edit3 className="h-4 w-4" />
+                        Edit Profile
+                      </button>
+                      <button
+                        onClick={logout}
+                        className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-red-500 transition"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Logout
+                      </button>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* logout button */}
-            <button
+            {/* <button
               onClick={logout}
               className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-gray-800 to-gray-700 px-4 py-2 text-sm font-semibold text-gray-100 shadow-sm hover:from-gray-700 hover:to-gray-600 transition"
             >
@@ -84,7 +232,7 @@ export default function Header() {
                 />
               </svg>
               Logout
-            </button>
+            </button> */}
           </div>
         ) : (
           <Link
