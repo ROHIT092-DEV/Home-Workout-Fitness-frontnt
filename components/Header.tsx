@@ -22,7 +22,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Header() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [userDeatils, setUserDetails] = useState<any>(null);
+  interface User {
+    fullName: string;
+    email: string;
+    phone?: string;
+    role: string;
+    status: string;
+    emailVerified: boolean;
+    createdAt: string | number | Date;
+    updatedAt: string | number | Date;
+  }
+
+  const [userDeatils, setUserDetails] = useState<User | null>(null);
 
   // const { user, logout } = useAuthStore();
 
