@@ -28,12 +28,18 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
+  // clearUser: () => set({ user: null }),
+
+  clearUser: () => {
+    Cookies.remove('accessToken', { path: '/' });
+    Cookies.remove('refreshToken', { path: '/' });
+    set({ user: null });
+  },
   hydrateUser: async () => {
     try {
       const token = Cookies.get('refreshToken');
 
-      console.log(token)
+      console.log(token);
       if (!token) return;
 
       // call backend with refreshToken to fetch user details
@@ -47,7 +53,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       if (!res.ok) return;
       const data = await res.json();
 
-     console.log("New data is", data.user);
+      console.log('New data is', data.user);
 
       set({ user: data.user });
     } catch (err) {
