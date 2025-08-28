@@ -44,9 +44,11 @@ export default function Header() {
     { label: 'Home', href: '#', icon: Home },
     { label: 'Membership', href: '#plans', icon: Dumbbell },
     { label: 'Trainers', href: '#trainers', icon: Users },
-    { label: 'Classes', href: '#classes', icon: Calendar },
+    { label: 'My View', href: '/my-view', icon: Calendar },
     { label: 'Contact', href: '#contact', icon: Phone },
   ];
+
+  console.log(`User Role is ` + user?.role);
 
   const initials = user?.fullName
     ? user.fullName
@@ -58,9 +60,9 @@ export default function Header() {
     : 'U';
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-[#0b0f14] text-white shadow-md">
+    <header className=" inset-x-0 top-0 z-50 bg-white text-black border-b shadow-md">
       {/* Top Section: Logo and Login Button */}
-      <div className="flex items-center justify-between px-2 md:px-6 py-4 lg:px-12">
+      <div className="flex items-center justify-between px-2 md:px-6 py-2 lg:px-12">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           {/* Optional Icon */}
@@ -88,14 +90,30 @@ export default function Header() {
           ))}
         </nav>
 
+        {/* Admin Button - visible on all screens */}
+        {user && user.role === 'admin' && (
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-2 rounded-sm bg-gradient-to-r from-fuchsia-600 to-purple-700 px-4 py-2 text-sm font-semibold text-white shadow-md hover:from-fuchsia-700 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:ring-offset-1 transition-all"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              className="text-white"
+            >
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+            </svg>
+            <span>Admin</span>
+          </Link>
+        )}
+
         {/* Login/Logout Button */}
+
         {user ? (
           <div className="flex items-center gap-3">
-            {/* email */}
-            {/* <span className="text-sm font-medium text-gray-200 bg-white/5 px-3 py-1 rounded-lg">
-              {user.email}
-            </span> */}
-
             <button
               onClick={() => setIsOpen(true)}
               className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-400 text-white font-bold shadow-md hover:opacity-90 transition"
@@ -222,28 +240,6 @@ export default function Header() {
                 </motion.div>
               )}
             </AnimatePresence>
-
-            {/* logout button */}
-            {/* <button
-              onClick={logout}
-              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-gray-800 to-gray-700 px-4 py-2 text-sm font-semibold text-gray-100 shadow-sm hover:from-gray-700 hover:to-gray-600 transition"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-                />
-              </svg>
-              Logout
-            </button> */}
           </div>
         ) : (
           <Link
@@ -269,10 +265,10 @@ export default function Header() {
 
       {/* Bottom Section: Menu Options for Mobile */}
       <div
-        className="lg:hidden fixed inset-x-0 bottom-0 bg-[#0b0f14]/95 backdrop-blur border-t
-       border-white/10 shadow-lg"
+        className="lg:hidden fixed inset-x-0 bottom-0 bg-white  backdrop-blur border-t
+       border shadow-lg"
       >
-        <nav className="flex justify-around items-center py-4">
+        <nav className="flex justify-around items-center py-2">
           {navLinks.map(({ label, href, icon: Icon }) => {
             const active = pathname === href;
             return (
@@ -282,7 +278,7 @@ export default function Header() {
                 className={`flex flex-col items-center text-xs transition-colors ${
                   active
                     ? 'text-fuchsia-400'
-                    : 'text-white font-bold hover:text-fuchsia-300'
+                    : 'text-black font-bold hover:text-fuchsia-300'
                 }`}
               >
                 <Icon className="h-5 w-5 mb-0.5" />

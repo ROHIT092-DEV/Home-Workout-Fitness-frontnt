@@ -5,36 +5,6 @@ import Image from 'next/image';
 export default function LandingPage() {
   return (
     <div className="bg-gradient-to-br from-yellow-50 via-white to-yellow-100 text-gray-900 font-sans">
-      {/* Hero Section */}
-      <section
-        className="relative h-screen bg-cover bg-center"
-        style={{
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1651840403916-d1e0515b32c4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjU5fHxneW18ZW58MHx8MHx8fDA%3D)',
-        }}
-      >
-        <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center text-white">
-          <h1 className="text-3xl md:text-7xl font-extrabold tracking-tight">
-            Unleash Your <span className="text-orange-500">Inner Strength</span>
-          </h1>
-          <p className="mt-4 text-md md:text-2xl max-w-2xl">
-            Join thousands of members who’ve transformed their lives with our
-            expert trainers, state-of-the-art equipment, and supportive
-            community.
-          </p>
-          <div className="mt-6 flex flex-col md:flex-row gap-4">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition">
-              Start Your Journey
-            </button>
-            <input
-              type="text"
-              placeholder="Enter your email"
-              className="px-4 py-3 rounded-lg border border-gray-300 shadow-md focus:ring-2 focus:ring-orange-500"
-            />
-          </div>
-        </div>
-      </section>
-
       {/* Stats Section */}
       <section className="py-20 bg-gradient-to-r from-gray-50 to-white">
         <div className="max-w-6xl mx-auto px-6">
