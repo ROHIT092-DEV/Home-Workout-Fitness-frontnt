@@ -25,7 +25,7 @@ function MyView() {
         setLoading(true); // start loading
 
         const response = await fetch(
-          `http://localhost:5001/api/membership/user/${user._id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/membership/user/${user._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
