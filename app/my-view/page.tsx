@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/auth';
 import AccessDeniedModal from '@/components/AccessDeniedModal';
 import Cookies from 'js-cookie';
+import MyViewHeader from '@/components/MyViewComponent/MyViewHeader';
 
 type Subscription = {
   userId?: string;
@@ -73,10 +74,16 @@ function MyView() {
 
   return (
     <div>
-      <main>
-        <Header />
+      <main className="px-2">
+        <MyViewHeader />
 
-        <h1 className="text-xl sm:text-2xl font-bold mb-4">My Subscriptions</h1>
+        {/* Show the box how many total Active Plan available */}
+
+        {/* How Many History plan Do we have  */}
+
+        <h1 className="text-xl mb-4 sm:text-2xl font-bold pt-2 ">
+          Hi {`${user.fullName}`} Your Active Plan
+        </h1>
 
         {loading ? (
           <div className="text-center text-sm sm:text-base text-gray-500">
