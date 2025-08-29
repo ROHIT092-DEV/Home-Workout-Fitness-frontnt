@@ -1,34 +1,23 @@
 'use client';
-import MyViewHeader from '@/components/MyViewComponent/MyViewHeader';
-import { Button } from '@/components/ui/button';
-import { useAuthStore } from '@/store/auth';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
+
 import Header from '@/components/Header';
+import React, { useEffect, useState } from 'react';
+import { useAuthStore } from '@/store/auth';
 import AccessDeniedModal from '@/components/AccessDeniedModal';
+import Cookies from 'js-cookie';
+import MyViewHeader from '@/components/MyViewComponent/MyViewHeader';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 type Subscription = {
-  _id?: string;
-  status?: string;
-  planId?: {
-    name: string;
-    price: number;
-    durationInDays: number;
-    description: string;
-  };
-  userId?: {
-    fullName: string;
-  };
-  paymentStatus?: string;
-  startDate?: string;
-  endDate?: string;
+  userId?: string;
+  // Add other properties as needed based on your API response
 };
 
-function SubscriptionHistory() {
+function MyView() {
   const user = useAuthStore((state) => state.user);
-  const [subscription, setSubscription] = useState<Subscription[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [loading, setLoading] = useState(true); // ✅ loading state
 
   useEffect(() => {
     if (!user) return;
@@ -36,7 +25,7 @@ function SubscriptionHistory() {
     const fetchData = async () => {
       const token = Cookies.get('refreshToken');
       try {
-        setLoading(true);
+        setLoading(true); // start loading
 
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/membership/user/${user._id}`,
@@ -51,18 +40,30 @@ function SubscriptionHistory() {
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
 
+        // ✅ log raw response
         console.log('Subscription Raw Data:', JSON.stringify(data, null, 2));
 
+        // ✅ update state
         setSubscription(data);
       } catch (error) {
         console.error('Error fetching subscription:', error);
       } finally {
-        setLoading(false);
+        setLoading(false); // stop loading
       }
     };
 
     fetchData();
   }, [user]);
+
+  // ✅ log subscription only after state updates
+  useEffect(() => {
+    if (subscription) {
+      console.log(
+        'Subscription Raw Data final:',
+        JSON.stringify(subscription, null, 2)
+      );
+    }
+  }, [subscription]);
 
   if (!user) {
     return (
@@ -75,68 +76,74 @@ function SubscriptionHistory() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <MyViewHeader />
-      <Link href="/">
-        <Button variant="ghost" className="px-0">
-          &larr; Back to Home
-        </Button>
-      </Link>
+      <main className="px-2  ">
+        <MyViewHeader />
 
-      <main className="px-2">
-        <h1 className="text-xl mb-4 sm:text-2xl font-bold pt-2">
-          Hi {user.fullName}, Your Active Subscription
+        {/* back button */}
+
+        <Link href="/my-view">
+          <Button variant="ghost" className="px-0">
+            &larr; Back to Home
+          </Button>
+        </Link>
+        <h1 className="text-xl mb-4 sm:text-2xl font-bold pt-2 ">
+          Hi {`${user.fullName}`} Your Subscription History
         </h1>
 
         {loading ? (
           <div className="text-center text-sm sm:text-base text-gray-500">
             Loading subscriptions...
           </div>
-        ) : Array.isArray(subscription) &&
-          subscription.filter((sub) => sub.status === 'active').length > 0 ? (
-          subscription
-            .filter((sub) => sub.status === 'active')
-            .map((sub) => (
+        ) : Array.isArray(subscription) && subscription.length > 0 ? (
+          subscription.map((sub) => {
+            const isActive = sub.status === 'active';
+            return (
               <div
                 key={sub._id}
                 className="p-3 mb-3 border rounded-lg shadow-sm bg-white sm:p-4 sm:mb-4"
               >
                 <h2 className="text-sm sm:text-base font-semibold mb-1 truncate">
-                  {sub.planId?.name} ({sub.userId?.fullName})
+                  {sub.planId.name} ({sub.userId.fullName})
                 </h2>
                 <div className="flex flex-wrap text-xs sm:text-sm gap-1 sm:gap-2">
-                  <span>
-                    <strong>Price:</strong> ₹{sub.planId?.price}
+                  <span className="flex items-center gap-1">
+                    <strong>Price:</strong> ₹{sub.planId.price}
                   </span>
-                  <span>
-                    <strong>Duration:</strong> {sub.planId?.durationInDays} days
+                  <span className="flex items-center gap-1">
+                    <strong>Duration:</strong> {sub.planId.durationInDays} days
                   </span>
-                  <span>
+                  <span className="flex items-center gap-1">
                     <strong>Payment:</strong> {sub.paymentStatus}
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm mt-1 line-clamp-2">
-                  {sub.planId?.description}
+                  {sub.planId.description}
                 </p>
                 <div className="flex flex-wrap justify-between items-center mt-2 text-xs sm:text-sm">
                   <div>
                     <p>
                       <strong>Start:</strong>{' '}
-                      {new Date(sub.startDate!).toLocaleDateString()}
+                      {new Date(sub.startDate).toLocaleDateString()}
                     </p>
                     <p>
                       <strong>End:</strong>{' '}
-                      {new Date(sub.endDate!).toLocaleDateString()}
+                      {new Date(sub.endDate).toLocaleDateString()}
                     </p>
                   </div>
-                  <span className="px-2 py-1 rounded-full text-white text-xs font-medium bg-green-500">
-                    {sub.status?.toUpperCase()}
+                  <span
+                    className={`px-2 py-1 rounded-full text-white text-xs font-medium ${
+                      isActive ? 'bg-green-500' : 'bg-red-500'
+                    }`}
+                  >
+                    {sub.status.toUpperCase()}
                   </span>
                 </div>
               </div>
-            ))
+            );
+          })
         ) : (
           <div className="p-3 text-sm text-gray-500">
-            No active subscriptions found
+            No subscriptions found
           </div>
         )}
       </main>
@@ -144,4 +151,4 @@ function SubscriptionHistory() {
   );
 }
 
-export default SubscriptionHistory;
+export default MyView;
