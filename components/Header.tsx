@@ -265,7 +265,7 @@ export default function Header() {
 
       {/* Bottom Section: Menu Options for Mobile */}
       <div
-        className="lg:hidden fixed inset-x-0 bottom-0 bg-white  backdrop-blur border-t
+        className="lg:hidden fixed inset-x-0 bottom-0 z-50 bg-white  backdrop-blur border-t
        border shadow-lg"
       >
         <nav className="flex justify-around items-center py-2">
