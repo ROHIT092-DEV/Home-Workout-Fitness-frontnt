@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { useAuthStore } from '@/store/auth';
 import { Delete, Edit, SubscriptIcon, View } from 'lucide-react';
 import Header from '../Header';
+import { useRouter } from 'next/navigation';
 
 interface IUser {
   _id: string;
@@ -19,6 +20,7 @@ function UserManagement() {
   const [userList, setUserList] = useState<IUser[]>([]);
   const [loading, setLoading] = useState(true);
   const user = useAuthStore((state) => state.user);
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
@@ -145,7 +147,9 @@ function UserManagement() {
                   </td>
                   <td className="py-2 px-2 sm:px-4 border-b border-gray-300">
                     <button
-                      onClick={() => handleSubscription(u._id)}
+                      onClick={() =>
+                        router.push(`/admin/subscription-management/${u._id}`)
+                      }
                       className="p-1 hover:text-blue-600"
                     >
                       <SubscriptIcon size={18} />
