@@ -7,7 +7,7 @@ import React from 'react';
 import { useAuthStore } from '@/store/auth';
 import UserManagement from '@/components/AdminComponent/UserManagement';
 
-function page() {
+function Page() {
   const { user } = useAuthStore();
 
   if (!user || user.role !== 'admin') {
@@ -45,4 +45,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
