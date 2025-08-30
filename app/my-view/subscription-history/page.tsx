@@ -83,7 +83,7 @@ function MyView() {
 
         <Link href="/my-view">
           <Button variant="ghost" className="px-0">
-            &larr; Back to Home
+            &larr; Back to my view
           </Button>
         </Link>
         <h1 className="text-xl mb-4 sm:text-2xl font-bold pt-2 ">
