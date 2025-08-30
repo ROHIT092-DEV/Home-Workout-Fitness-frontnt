@@ -7,7 +7,15 @@ import Header from '../Header';
 import { Delete, Edit, SubscriptIcon, View } from 'lucide-react';
 
 function UserManagement() {
-  const [userList, setUserList] = useState<any[]>([]);
+  interface IUser {
+    _id: string;
+    fullName: string;
+    email: string;
+    role: string;
+    // Add other fields if needed
+  }
+
+  const [userList, setUserList] = useState<IUser[]>([]);
   const [loading, setLoading] = useState(true);
   const user = useAuthStore((state) => state.user);
 
@@ -47,7 +55,6 @@ function UserManagement() {
         <div className="text-center text-sm">Loading...</div>
       ) : (
         <div>
-          <Header />
           <h1 className="text-lg sm:text-2xl font-bold mb-3 sm:mb-4">
             User Management
           </h1>
@@ -78,7 +85,7 @@ function UserManagement() {
                       View
                     </th>
                     <th className="py-2 px-2 sm:px-4 border-b border-gray-300 text-left">
-                      History
+                      Subscript
                     </th>
                     <th className="py-2 px-2 sm:px-4 border-b border-gray-300 text-left">
                       Delete

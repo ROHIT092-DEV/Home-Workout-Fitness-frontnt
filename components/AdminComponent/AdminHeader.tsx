@@ -3,10 +3,15 @@
 import Link from 'next/link';
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import { Users, CreditCard, Settings } from 'lucide-react';
+import { Users, CreditCard, Settings, icons, Home } from 'lucide-react';
 
 function AdminHeader() {
   const menus = [
+    {
+      name: 'Admin Home',
+      href: '/admin',
+      icon: Home,
+    },
     { name: 'Users Management', href: '/admin/users-management', icon: Users },
     {
       name: 'Subscription Management',
