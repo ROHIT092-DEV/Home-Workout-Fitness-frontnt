@@ -27,10 +27,13 @@ function UserManagement() {
       const token = Cookies.get('refreshToken');
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5001/api/auth/users`, {
-          headers: { Authorization: `Bearer ${token}` },
-          credentials: 'include',
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/users`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            credentials: 'include',
+          }
+        );
 
         if (!response.ok) throw new Error('Network response was not ok');
         const result = await response.json();
