@@ -72,7 +72,6 @@ function UserManagement() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-2 sm:p-4">
-      <Header />
       <h1 className="text-lg sm:text-2xl font-bold mb-3 sm:mb-4">
         User Management
       </h1>
