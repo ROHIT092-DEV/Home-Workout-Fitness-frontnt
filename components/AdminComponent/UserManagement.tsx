@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useAuthStore } from '@/store/auth';
-import Header from '../Header';
+
 import { Delete, Edit, SubscriptIcon, View } from 'lucide-react';
 
 function UserManagement() {
